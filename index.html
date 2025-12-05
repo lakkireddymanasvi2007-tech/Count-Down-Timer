@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickTimer ⏱️ - Simple Countdown</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏱️</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <div>
+                    <h1 class="app-title">QuickTimer</h1>
+                    <span class="app-subtitle">Simple Countdown with Alerts</span>
+                </div>
+            </div>
+            <div class="header-controls">
+                <button class="icon-btn sound-toggle" id="soundToggle" title="Toggle sound (S)">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button class="icon-btn notify-toggle" id="notifyToggle" title="Toggle notifications (N)">
+                    <i class="fas fa-bell"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="timer-app">
+            <div class="timer-display">
+                <div class="time-circle">
+                    <svg class="progress-ring" width="360" height="360">
+                        <circle class="progress-ring-bg" cx="180" cy="180" r="160" stroke-width="16"></circle>
+                        <circle class="progress-ring-fill" cx="180" cy="180" r="160" stroke-width="16"></circle>
+                    </svg>
+                    <div class="time-container">
+                        <div class="time-units">
+                            <div class="time-unit">
+                                <div id="minutes" class="time-value">01</div>
+                                <div class="time-label-small">MINUTES</div>
+                            </div>
+                            <div class="time-separator">:</div>
+                            <div class="time-unit">
+                                <div id="seconds" class="time-value">30</div>
+                                <div class="time-label-small">SECONDS</div>
+                            </div>
+                        </div>
+                        <div id="timeLabel" class="time-status">READY</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-panel">
+                <div class="time-input-section">
+                    <div class="input-group">
+                        <label for="timeInput">
+                            <i class="fas fa-clock"></i> Enter Seconds
+                        </label>
+                        <div class="input-with-buttons">
+                            <button class="input-btn minus" id="decreaseBtn" title="Decrease 10 seconds (↓)">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" id="timeInput" min="1" max="3600" value="90" placeholder="Enter seconds">
+                            <button class="input-btn plus" id="increaseBtn" title="Increase 10 seconds (↑)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="input-hint">Set seconds between 1 and 3600 (1 hour)</div>
+                    </div>
+                </div>
+
+                <div class="quick-time-buttons">
+                    <button class="quick-time" data-seconds="30">30s</button>
+                    <button class="quick-time" data-seconds="60">1 min</button>
+                    <button class="quick-time" data-seconds="300">5 min</button>
+                    <button class="quick-time" data-seconds="600">10 min</button>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-start" id="startBtn" title="Start timer (Space)">
+                        <i class="fas fa-play"></i> Start Timer
+                    </button>
+                    <button class="btn-pause" id="pauseBtn" disabled title="Pause timer (Space)">
+                        <i class="fas fa-pause"></i> Pause
+                    </button>
+                    <button class="btn-reset" id="resetBtn" title="Reset timer (R)">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+            </div>
+
+            <div class="alert-settings">
+                <h3 class="settings-title">
+                    <i class="fas fa-bell"></i> Alert Settings
+                </h3>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <label class="switch">
+                            <input type="checkbox" id="enableNotification" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <span>Browser Notification</span>
+                    </div>
+                    <div class="setting-item">
+                        <label class="switch">
+                            <input type="checkbox" id="enableSound" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <span>Alert Sound</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="notification-test">
+            <button class="btn-test" id="testNotification" title="Test notification (T)">
+                <i class="fas fa-vial"></i> Test Notification
+            </button>
+            <button class="btn-test" id="testSound" title="Test sound (S)">
+                <i class="fas fa-volume-up"></i> Test Sound
+            </button>
+        </div>
+
+        <div class="permission-status" id="permissionStatus">
+            <i class="fas fa-info-circle"></i>
+            <span>Notifications: <span class="status-text">Checking...</span></span>
+        </div>
+
+        <footer class="app-footer">
+            <p>Timer completes with <strong>Notification API</strong> + <strong>Audio Alert</strong></p>
+            <p class="footer-note">Allow notifications for the full experience • Space=Start/Pause • R=Reset</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- Add this just before the closing </body> tag in your index.html -->
+
+<div class="http-warning" id="httpWarning">
+    <i class="fas fa-exclamation-triangle"></i>
+    Notifications work best on HTTPS or localhost. For full functionality, run on local server.
+</div>
+
+<div class="debug-info" id="debugInfo">
+    <div>Protocol: <span id="protocolInfo"></span></div>
+    <div>Notifications: <span id="notifInfo"></span></div>
+    <div>Permission: <span id="permInfo"></span></div>
+</div>
+
+<script>
+    // Debug info - shows current status
+    document.addEventListener('DOMContentLoaded', function() {
+        const protocol = window.location.protocol;
+        const protocolInfo = document.getElementById('protocolInfo');
+        const notifInfo = document.getElementById('notifInfo');
+        const permInfo = document.getElementById('permInfo');
+        const httpWarning = document.getElementById('httpWarning');
+        
+        protocolInfo.textContent = protocol;
+        notifInfo.textContent = 'Notification' in window ? 'Supported' : 'Not Supported';
+        permInfo.textContent = Notification.permission;
+        
+        // Show warning if not HTTPS or localhost
+        if (protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+            httpWarning.style.display = 'block';
+        }
+        
+        // Press Ctrl+Shift+D to show debug info
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+                const debugInfo = document.getElementById('debugInfo');
+                debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+    });
+</script>
+</body>
+</html>
